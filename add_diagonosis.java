@@ -187,27 +187,27 @@ public class add_diagonosis extends JFrame {
         comboBox.setBounds(272, 484, 236, 42);
         contentPane.add(comboBox);
 
-        CheckBox = new JCheckBox("YES");
-        CheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (temp % 2 == 0) {
-                    comboBox.setVisible(true);
-                    Label62.setVisible(true);
-                    ck = true;
-                    temp++;
-                } else {
-                    comboBox.setVisible(false);
-                    Label62.setVisible(false);
-                    ck = false;
-                    temp++;
-                }
-            }
-        });
-        // CheckBox.action(null, btnNewButton)
-        CheckBox.setVisible(false);
-        // CheckBox.setFont(new Font("Tahoma", Font.BOLD, 24));
-        CheckBox.setBounds(272, 433, 236, 39);
-        contentPane.add(CheckBox);
+        // CheckBox = new JCheckBox("YES");
+        // CheckBox.addActionListener(new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         if (temp % 2 == 0) {
+        //             comboBox.setVisible(true);
+        //             Label62.setVisible(true);
+        //             ck = true;
+        //             temp++;
+        //         } else {
+        //             comboBox.setVisible(false);
+        //             Label62.setVisible(false);
+        //             ck = false;
+        //             temp++;
+        //         }
+        //     }
+        // });
+        // // CheckBox.action(null, btnNewButton)
+        // CheckBox.setVisible(false);
+        // // CheckBox.setFont(new Font("Tahoma", Font.BOLD, 24));
+        // CheckBox.setBounds(272, 433, 236, 39);
+        // contentPane.add(CheckBox);
 
         JButton btnNewButton_1 = new JButton("UPDATE");
         btnNewButton_1.addActionListener(new ActionListener() {
@@ -218,14 +218,7 @@ public class add_diagonosis extends JFrame {
                 String symptom = text1.getText();
                 String digonosis = text2.getText();
                 String medecine = text3.getText();
-                String wordneed = "";
-                String type = (String) comboBox.getSelectedItem();
-                if (ck)
-                    wordneed = "YES";
-                else {
-                    wordneed = "NO";
-                    type = "";
-                }
+                
                 try {
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital", "root",
                             "Arpit@0502");
@@ -272,24 +265,6 @@ public class add_diagonosis extends JFrame {
         // text3.setVisible(false);
         contentPane.add(text3);
 
-        Label61 = new JLabel("WORD NEED");
-        Label61.setVisible(false);
-        Label61.setForeground(Color.RED);
-        // Label61.setFont(new Font("Tahoma", Font.BOLD, 22));
-        Label61.setBounds(42, 431, 154, 33);
-        contentPane.add(Label61);
-
-        Label62 = new JLabel("TYPE OF WORD");
-        Label62.setVisible(false);
-        Label62.setForeground(Color.RED);
-        // Label62.setFont(new Font("Tahoma", Font.BOLD, 22));
-        Label62.setBounds(42, 488, 206, 33);
-        contentPane.add(Label62);
-
-        JLabel lblNewLabel = new JLabel("");
-        // lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 21));
-        lblNewLabel.setForeground(new Color(255, 255, 255));
-        lblNewLabel.setBounds(0, 0, 545, 700);
-        contentPane.add(lblNewLabel);
+        
     }
 }

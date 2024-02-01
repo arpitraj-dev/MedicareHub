@@ -2,7 +2,6 @@ import java.sql.*;
 import java.math.*;
 import java.awt.EventQueue;
 import java.awt.Font;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -64,18 +62,29 @@ public class addnew extends log_in {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JButton ok = new JButton("ADD PATIENT");
+        JButton ok = new JButton("Add Patient");
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String name = text.getText();
-                String age = text1.getText();
-                String mobile_no = text2.getText();
+                String ageStr = text1.getText();
+                String mobile_noStr = text2.getText();
                 String blood_group = text3.getText();
                 String gender = text4.getText();
                 String address = text5.getText();
                 String problem = text6.getText();
 
                 try {
+                    int age = Integer.parseInt(ageStr);
+                    long mobile_no = Long.parseLong(mobile_noStr);
+
+                    if (!(blood_group.equals("A") || blood_group.equals("B") || blood_group.equals("O"))) {
+                        throw new IllegalArgumentException("Invalid blood group");
+                    }
+
+                    if (!(gender.equals("male") || gender.equals("female"))) {
+                        throw new IllegalArgumentException("Invalid gender");
+                    }
+
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital", "root",
                             "Arpit@0502");
@@ -83,8 +92,8 @@ public class addnew extends log_in {
                     PreparedStatement pst = con.prepareStatement(
                             "INSERT INTO patients(name,age,mobile_no,blood_group,gender,address,problem) VALUES(?,?,?,?,?,?,?)  ");
                     pst.setString(1, name);
-                    pst.setString(2, age);
-                    pst.setString(3, mobile_no);
+                    pst.setInt(2, age);
+                    pst.setLong(3, mobile_no);
                     pst.setString(4, blood_group);
                     pst.setString(5, gender);
                     pst.setString(6, address);
@@ -99,6 +108,10 @@ public class addnew extends log_in {
                     JOptionPane.showMessageDialog(null, "Successfully updated! \n New Patient ID is " + last_id + ".");
                     setVisible(false);
                     new addnew().setVisible(true);
+                } catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(null, "Enter valid numeric values for Age or Mobile Number");
+                } catch (IllegalArgumentException iae) {
+                    JOptionPane.showMessageDialog(null, iae.getMessage());
                 } catch (Exception er) {
                     System.out.println(er);
                     JOptionPane.showMessageDialog(null, "Enter values in correct format");
@@ -108,7 +121,7 @@ public class addnew extends log_in {
         ok.setBounds(24, 535, 183, 40);
         contentPane.add(ok);
 
-        JButton btnNewButton_1 = new JButton("cancel");
+        JButton btnNewButton_1 = new JButton("Cancel");
         btnNewButton_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int a = JOptionPane.showConfirmDialog(null, "DO YOU WANT TO Close?", "Select",

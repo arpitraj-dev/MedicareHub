@@ -1,5 +1,6 @@
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,54 +35,56 @@ public class main_new extends log_in {
      * Create the frame.
      */
     public main_new() {
-        // setTitle("MAIN");
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true);
         setBounds(0, 0, 1366, 768);
+
+        // Create a JLabel to hold the background image
+        JLabel backgroundLabel = new JLabel();
         contentPane = new JPanel();
-        // contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
         contentPane.setLayout(null);
+
+        // Load the background image and set it to the JLabel
+        ImageIcon backgroundImage = new ImageIcon(getClass().getResource("back-image.jpg"));
+        Image img = backgroundImage.getImage().getScaledInstance(1366, 768, Image.SCALE_SMOOTH);
+        backgroundLabel.setIcon(new ImageIcon(img));
+        backgroundLabel.setBounds(0, 0, 1366, 768);
+
+        // Add the JLabel with the background image to the content pane
+        contentPane.add(backgroundLabel);
+
+        // Add the heading "MediCareHub" in big bold letters directly to the content
+        // pane
+        // JLabel headingLabel = new JLabel("MediCareHub");
+        // headingLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        // headingLabel.setBounds(500, 50, 400, 50);
+        // contentPane.add(headingLabel);
 
         JButton btnNewButton = new JButton("Add New Patient");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 new addnew().setVisible(true);
             }
         });
-        // btnNewButton.setFont(new Font("Segoe UI", Font.BOLD, 27));
         btnNewButton.setBounds(38, 186, 365, 45);
         contentPane.add(btnNewButton);
 
-        // JButton btnNewButton_1 = new JButton("Update Patient Record");
-        // btnNewButton_1.addActionListener(new ActionListener() {
-        // public void actionPerformed(ActionEvent e) {
-        // new update_patient().setVisible(true);
-        // }
-        // });
-        // // btnNewButton_1.setFont(new Font("Segoe UI", Font.BOLD, 27));
-        // btnNewButton_1.setBounds(38, 186, 365, 45);
-        // contentPane.add(btnNewButton_1);
-
-        JButton btnNewButton_1_1 = new JButton("AddDiagnosisInformation");
+        JButton btnNewButton_1_1 = new JButton("Add Diagnosis Information");
         btnNewButton_1_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new add_diagonosis().setVisible(true);
             }
         });
-        // btnNewButton_1_1.setFont(new Font("Segoe UI", Font.BOLD, 27));
         btnNewButton_1_1.setBounds(38, 259, 365, 45);
         contentPane.add(btnNewButton_1_1);
 
-        JButton btnNewButton_1_2 = new JButton("FullHistoryOfPatients");
+        JButton btnNewButton_1_2 = new JButton("Full History Of Patients");
         btnNewButton_1_2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new patient_history().setVisible(true);
             }
         });
-        // btnNewButton_1_2.setFont(new Font("Segoe UI", Font.BOLD, 27));
         btnNewButton_1_2.setBounds(38, 334, 365, 45);
         contentPane.add(btnNewButton_1_2);
 
@@ -96,12 +99,9 @@ public class main_new extends log_in {
                 }
             }
         });
-        // btnNewButton_1_3.setFont(new Font("Tahoma", Font.BOLD, 26));
         btnNewButton_1_3.setBounds(38, 412, 365, 41);
         contentPane.add(btnNewButton_1_3);
 
-        JLabel lblNewLabel = new JLabel("");
-        lblNewLabel.setBounds(0, 0, 1366, 768);
-        contentPane.add(lblNewLabel);
+        setContentPane(contentPane); // Set the content pane with the background image
     }
 }

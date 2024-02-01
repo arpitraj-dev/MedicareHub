@@ -1,4 +1,3 @@
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -49,11 +48,17 @@ public class log_in extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true);
         setBounds(0, 0, 1386, 769);
+
+        JLabel background = new JLabel();
+        background.setIcon(new ImageIcon(log_in.class.getResource("login-page.jpg")));
+        background.setBounds(0, 0, 1386, 769);
+
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
         setContentPane(contentPane);
         contentPane.setLayout(null);
+
+        contentPane.add(background);
 
         JLabel lblNewLabel_1 = new JLabel("USER NAME");
         lblNewLabel_1.setBounds(391, 241, 289, 64);

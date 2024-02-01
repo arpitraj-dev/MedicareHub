@@ -1,9 +1,9 @@
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
@@ -55,6 +55,7 @@ public class patient_history extends JFrame {
         JLabel lblNewLabel_1 = new JLabel("Full History Of Patient");
         lblNewLabel_1.setBackground(new Color(255, 255, 255));
         lblNewLabel_1.setForeground(new Color(255, 255, 128));
+
         lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 30));
         lblNewLabel_1.setBounds(190, 11, 483, 60);
         contentPane.add(lblNewLabel_1);
@@ -93,43 +94,58 @@ public class patient_history extends JFrame {
         JButton btnSearch = new JButton("Search");
         btnSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 String id = textField.getText();
 
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital", "root",
                             "Arpit@0502");
-                    Statement st = con.createStatement();
-                    // ResultSet rs=st.executeQuery("");
+
                     PreparedStatement pst = con.prepareStatement("SELECT id FROM patients WHERE id=?",
                             ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
                     pst.setString(1, id);
                     ResultSet ss = pst.executeQuery();
-                    ss.next();
+
                     if (ss.first()) {
-                        // System.out.print("hi");
-                        // Statement sts=con.createStatement();
                         PreparedStatement psst = con.prepareStatement(
-                                "SELECT p.id as id,p.name as NAME,p.age AS AGE,p.problem AS PROBLEM,u.symptom AS SYMPTOM,u.diagnosis AS DIAGONOSIS,u.medicine AS MEDICINE FROM patients P JOIN update_record u USING(id)",
+                                "SELECT p.id as id,p.name as NAME,p.age AS AGE,p.problem AS PROBLEM,u.symptom AS SYMPTOM,u.diagnosis AS DIAGONOSIS,u.medicine AS MEDICINE FROM patients P JOIN update_record u USING(id) WHERE id=?",
                                 ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                        // psst.setString(1, id);
+                        psst.setString(1, id);
                         ResultSet rs = psst.executeQuery();
-                        rs.next();
-                        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                        table.setModel(DbUtils.resultSetToTableModel(rs));
-                        // table.setmo
+
+                        // Using DefaultTableModel to set data to the JTable
+                        DefaultTableModel model = new DefaultTableModel();
+                        ResultSetMetaData metaData = rs.getMetaData();
+                        int columnCount = metaData.getColumnCount();
+
+                        // Add column names to the model
+                        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                            model.addColumn(metaData.getColumnLabel(columnIndex));
+                        }
+
+                        // Add data to the model
+                        while (rs.next()) {
+                            Object[] rowData = new Object[columnCount];
+                            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                                rowData[columnIndex - 1] = rs.getObject(columnIndex);
+                            }
+                            model.addRow(rowData);
+                        }
+
+                        // Set the model to the table
+                        table.setModel(model);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Enter Currect Id!!!");
+                        JOptionPane.showMessageDialog(null, "Enter Correct Id!!!");
                     }
+
+                    con.close();
                 } catch (Exception e1) {
-                    System.out.print(e1);
-                    // JOptionPane.showMessageDialog(null,"Connection Problem");
+                    e1.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Connection Problem");
                 }
             }
-
         });
+
         btnSearch.setFont(new Font("Tahoma", Font.BOLD, 18));
         btnSearch.setBounds(561, 82, 166, 35);
         contentPane.add(btnSearch);
